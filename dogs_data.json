@@ -1,0 +1,56 @@
+[
+  {
+    "model": "dogs.breed",
+    "pk": 2,
+    "fields": {
+      "breed_name": "Далматин",
+      "description": "Красивый и пушистый"
+    }
+  },
+  {
+    "model": "dogs.breed",
+    "pk": 3,
+    "fields": {
+      "breed_name": "Немецкая овчарка",
+      "description": "Умный и пушистый"
+    }
+  },
+    {
+    "model": "dogs.breed",
+    "pk": 4,
+    "fields": {
+      "breed_name": "Пудель",
+      "description": "Сладкий и пушистый"
+    }
+  },
+  {
+    "model": "dogs.dog",
+    "pk": 2,
+    "fields": {
+      "dog_name": "Пирожочек",
+      "breed_id": 2,
+      "dog_photo": "",
+      "birthday": "2020-08-15"
+    }
+  },
+  {
+    "model": "dogs.dog",
+    "pk": 3,
+    "fields": {
+      "dog_name": "Пират",
+      "breed_id": 3,
+      "dog_photo": "",
+      "birthday": "2023-01-15"
+    }
+  },
+  {
+    "model": "dogs.dog",
+    "pk": 4,
+    "fields": {
+      "dog_name": "Кокосик",
+      "breed_id": 4,
+      "dog_photo": "",
+      "birthday": "2021-01-11"
+    }
+  }
+]
