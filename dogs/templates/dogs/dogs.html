@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'dogs/base.html' %}
+{% load my_tag %}
 
-</body>
-</html>
+{% block content %}
+        {% for object in object_list %}
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" src="{{ object.dog_photo|mymedia }}" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">{{ object.dog_name|title }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                  </div>
+                </div>
+              </div>
+            </div>
+      {% endfor %}
+{% endblock %}
+
+
