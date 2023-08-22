@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from dogs.models import Breed
+from dogs.models import Breed, Dog
 
 
 # Create your views here.
@@ -18,3 +18,12 @@ def breeds(request):
     }
     return render(request, 'dogs/breeds.html', context)
 
+
+def breed_dogs(request, pk):
+    breed = Breed.objects.get(pk=pk)
+
+    context = {
+        'object_list': Dog.objects.filter(breed_id=pk),
+        'title': f'Собаки породы {breed.breed_name}'
+    }
+    return render(request, 'dogs/dogs.html', context)

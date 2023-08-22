@@ -10,5 +10,5 @@ class DogAdmin(admin.ModelAdmin):
 
 
 @admin.register(Breed)
-class DogAdmin(admin.ModelAdmin):
+class BreedAdmin(admin.ModelAdmin):
     list_display = ['breed_name', 'description']
