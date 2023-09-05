@@ -23,8 +23,22 @@ class Dog(models.Model):
     birthday = models.DateField(verbose_name='дата рождения', **NULLABLE)
 
     def __str__(self):
-        return f"{self.dog_name} {self.birthday}"
+        return f"{self.dog_name} {self.birthday} ({self.breed_id})"
 
     class Meta:
         verbose_name = 'собака'
         verbose_name_plural = 'собаки'
+
+
+class Parent(models.Model):
+    dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
+    dog_name = models.CharField(max_length=250, verbose_name='имя')
+    breed_id = models.ForeignKey(Breed, models.SET_NULL, **NULLABLE)
+    birthday = models.DateField(verbose_name='дата рождения', **NULLABLE)
+
+    def __str__(self):
+        return (f"{self.dog_name} {self.birthday} ({self.breed_id})")
+
+    class Meta:
+        verbose_name = 'предок'
+        verbose_name_plural = 'предки'
