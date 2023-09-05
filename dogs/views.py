@@ -1,6 +1,8 @@
+from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
 
-from dogs.models import Breed, Dog
+from dogs.forms import DogForm, ParentForm
+from dogs.models import Breed, Dog, Parent
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 
 
@@ -45,18 +47,41 @@ class DogListView(ListView):
 
 class DogCreateView(CreateView):
     model = Dog
-    fields = ('dog_name', 'breed_id', )
+    form_class = DogForm
     success_url = reverse_lazy('dogs:breeds')
 
 
 class DogUpdateView(UpdateView):
     model = Dog
     fields = ('dog_name', 'breed_id', )
-    # success_url = reverse_lazy('dogs:breeds')
 
     def get_success_url(self):
         print([self.object.breed_id])
         return reverse('dogs:breed_dogs', args=[self.object.breed_id.pk])
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        ParentFormset = inlineformset_factory(Dog, Parent, form=ParentForm, extra=1)
+
+        if self.request.method == "POST":
+            formset = ParentFormset(self.request.POST, instance=self.object)
+        else:
+            formset = ParentFormset(instance=self.object)
+
+        context_data['formset'] = formset
+
+        return context_data
+
+    def form_valid(self, form):
+        context_data = self.get_context_data()
+        formset = context_data['formset']
+        self.object = form.save()
+
+        if formset.is_valid():
+            formset.instance = self.object
+            formset.save()
+
+        return super().form_valid(form)
 
 
 class DogDeleteView(DeleteView):
