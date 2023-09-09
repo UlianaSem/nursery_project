@@ -10,8 +10,9 @@
                   <p class="card-text">{{ object.dog_name|title }}</p>
                   <p class="card-text">
                       {% if object.birthday %}
-                        {{ object.birthday }}
+                        {{ object.birthday }}<br>
                       {% endif %}
+                      {{ object.owner|default:"Без хозяина" }}
                   </p>
                   <div class="d-flex justify-content-between align-items-center">
                   </div>

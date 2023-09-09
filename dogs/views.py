@@ -49,11 +49,18 @@ class DogCreateView(CreateView):
     model = Dog
     form_class = DogForm
     success_url = reverse_lazy('dogs:breeds')
+    
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        
+        return super().form_valid(form)
 
 
 class DogUpdateView(UpdateView):
     model = Dog
-    fields = ('dog_name', 'breed_id', )
+    form_class = DogForm
 
     def get_success_url(self):
         print([self.object.breed_id])

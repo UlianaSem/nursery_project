@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -21,6 +22,8 @@ class Dog(models.Model):
     breed_id = models.ForeignKey(Breed, models.SET_NULL, **NULLABLE)
     dog_photo = models.ImageField(upload_to='dogs/', verbose_name='фото', **NULLABLE)
     birthday = models.DateField(verbose_name='дата рождения', **NULLABLE)
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
 
     def __str__(self):
         return f"{self.dog_name} {self.birthday} ({self.breed_id})"
