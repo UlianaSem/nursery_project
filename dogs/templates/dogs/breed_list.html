@@ -3,7 +3,9 @@
 {% block content %}
     <div class="row">
         <div class="col-12 mb-5">
-            <a href="{% url 'dogs:create_dog' %}" class="btn btn-primary">Добавить собаку</a>
+            {% if perms.dogs.add_dog %}
+                <a href="{% url 'dogs:create_dog' %}" class="btn btn-primary">Добавить собаку</a>
+            {% endif %}
         </div>
         {% for object in object_list %}
             {% include 'dogs/includes/inc_breeds.html' %}
