@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.forms import inlineformset_factory
 from django.http import Http404
 from django.urls import reverse_lazy, reverse
@@ -6,6 +8,8 @@ from django.urls import reverse_lazy, reverse
 from dogs.forms import DogForm, ParentForm
 from dogs.models import Breed, Dog, Parent
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
+
+from dogs.services import get_breeds_cache
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
@@ -26,6 +30,9 @@ class BreedListView(LoginRequiredMixin, ListView):
     extra_context = {
         'title': 'Наши породы'
     }
+
+    def get_queryset(self):
+        return get_breeds_cache()
 
 
 class DogListView(LoginRequiredMixin, ListView):
