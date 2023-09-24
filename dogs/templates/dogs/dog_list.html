@@ -18,8 +18,12 @@
                   </div>
                 </div>
                   <div class="card-footer">
-                  <a href="{% url 'dogs:update_dogs' object.pk %}" class="btn btn-success">Редактировать</a>
-                  <a href="{% url 'dogs:delete_dogs' object.pk %}" class="btn btn-warning">Удалить</a>
+                      {% if perms.dogs.change_dog %}
+                        <a href="{% url 'dogs:update_dogs' object.pk %}" class="btn btn-success">Редактировать</a>
+                      {% endif %}
+                      {% if perms.dogs.delete_dog %}
+                        <a href="{% url 'dogs:delete_dogs' object.pk %}" class="btn btn-warning">Удалить</a>
+                      {% endif %}
                 </div>
               </div>
             </div>

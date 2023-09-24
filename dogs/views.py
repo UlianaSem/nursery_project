@@ -1,6 +1,4 @@
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.core.cache import cache
 from django.forms import inlineformset_factory
 from django.http import Http404
 from django.urls import reverse_lazy, reverse
@@ -9,7 +7,7 @@ from dogs.forms import DogForm, ParentForm
 from dogs.models import Breed, Dog, Parent
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 
-from dogs.services import get_breeds_cache
+from dogs.services import BreedsCacheMixin
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
@@ -24,7 +22,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
         return context_data
 
 
-class BreedListView(LoginRequiredMixin, ListView):
+class BreedListView(LoginRequiredMixin, BreedsCacheMixin, ListView):
     model = Breed
 
     extra_context = {
@@ -32,7 +30,7 @@ class BreedListView(LoginRequiredMixin, ListView):
     }
 
     def get_queryset(self):
-        return get_breeds_cache()
+        return self.get_breeds_cache()
 
 
 class DogListView(LoginRequiredMixin, ListView):
@@ -71,9 +69,10 @@ class DogCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class DogUpdateView(LoginRequiredMixin, UpdateView):
+class DogUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Dog
     form_class = DogForm
+    permission_required = 'dogs.change_dog'
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
@@ -112,6 +111,7 @@ class DogUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class DogDeleteView(LoginRequiredMixin, DeleteView):
+class DogDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Dog
     success_url = reverse_lazy('dogs:breeds')
+    permission_required = 'dogs.delete_dog'
